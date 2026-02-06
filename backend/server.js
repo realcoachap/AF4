@@ -63,12 +63,36 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Serve frontend files for non-API routes
+// Serve different pages based on route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/login.html'));
 });
 
-// Serve login page for any non-API route that doesn't match static files
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/login.html'));
+});
+
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/register.html'));
+});
+
+app.get('/index', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
+});
+
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/profile.html'));
+});
+
+app.get('/edit-profile', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/edit-profile.html'));
+});
+
+// Serve login page for any other non-API route that doesn't match static files
 app.get('*', (req, res) => {
   // If it's not an API route, serve login page
   if (!req.path.startsWith('/api/')) {

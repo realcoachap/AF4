@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Ascending Fitness</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="./images/logo.jpg" alt="Ascending Fitness" class="logo-img">
+                <h2>AF</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/calendar" class="nav-link">Calendar</a>
+                <a href="/workouts" class="nav-link">Workouts</a>
+                <a href="/nutrition" class="nav-link">Nutrition</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Edit Profile</h1>
+                <div class="user-info">
+                    <span id="userName">Loading...</span>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </header>
+
+            <div class="edit-profile-container">
+                <div class="profile-card">
+                    <h2>Update Your Information</h2>
+                    
+                    <form id="editProfileForm">
+                        <div class="form-section">
+                            <h3>Personal Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="age">Age</label>
+                                    <select id="age" name="age" class="form-select">
+                                        <option value="">Select age</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="height">Height</label>
+                                    <select id="height" name="height" class="form-select">
+                                        <option value="">Select height</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="weight">Weight</label>
+                                    <select id="weight" name="weight" class="form-select">
+                                        <option value="">Select weight</option>
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" class="form-select">
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Non-binary">Non-binary</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Emergency Contact</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="emergencyName">Emergency Contact Name</label>
+                                    <input type="text" id="emergencyName" name="emergencyName" class="form-control">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="emergencyPhone">Emergency Phone</label>
+                                    <input type="tel" id="emergencyPhone" name="emergencyPhone" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emergencyRelationship">Relationship</label>
+                                <input type="text" id="emergencyRelationship" name="emergencyRelationship" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Medical Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="medicalConditions">Medical Conditions</label>
+                                <textarea id="medicalConditions" name="medicalConditions" class="form-control" rows="3" placeholder="List any medical conditions, injuries, or limitations"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medications">Medications</label>
+                                <textarea id="medications" name="medications" class="form-control" rows="3" placeholder="List any medications you're currently taking"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="injuriesSurgeries">Injuries/Surgeries</label>
+                                <textarea id="injuriesSurgeries" name="injuriesSurgeries" class="form-control" rows="3" placeholder="List any past injuries or surgeries"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="allergies">Allergies</label>
+                                <textarea id="allergies" name="allergies" class="form-control" rows="3" placeholder="List any known allergies"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Fitness Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="fitnessLevel">Current Fitness Level</label>
+                                <select id="fitnessLevel" name="fitnessLevel" class="form-select">
+                                    <option value="">Select fitness level</option>
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                    <option value="Athlete">Athlete</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="workedOutBefore">Have you worked out before?</label>
+                                <select id="workedOutBefore" name="workedOutBefore" class="form-select">
+                                    <option value="">Select option</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <textarea id="workedOutBeforeDetails" name="workedOutBeforeDetails" class="form-control" rows="2" placeholder="Please describe your previous workout experience" style="margin-top: 0.5rem; display: none;"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exerciseTypes">What types of exercises do you enjoy?</label>
+                                <select id="exerciseTypes" name="exerciseTypes" class="form-select">
+                                    <option value="">Select option</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <textarea id="exerciseTypesDetails" name="exerciseTypesDetails" class="form-control" rows="2" placeholder="Please describe what types of exercises you enjoy" style="margin-top: 0.5rem; display: none;"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="exercisesToAvoid">Are there exercises you need to avoid?</label>
+                                <select id="exercisesToAvoid" name="exercisesToAvoid" class="form-select">
+                                    <option value="">Select option</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                                <textarea id="exercisesToAvoidDetails" name="exercisesToAvoidDetails" class="form-control" rows="2" placeholder="Please describe exercises you need to avoid and why" style="margin-top: 0.5rem; display: none;"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="equipmentAccess">What equipment do you have access to?</label>
+                                <select id="equipmentAccess" name="equipmentAccess" class="form-select">
+                                    <option value="">Select option</option>
+                                    <option value="Home Gym">Home Gym</option>
+                                    <option value="Commercial Gym">Commercial Gym</option>
+                                    <option value="Bodyweight Only">Bodyweight Only</option>
+                                    <option value="Limited Equipment">Limited Equipment</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3>Goals & Preferences</h3>
+                            
+                            <div class="form-group">
+                                <label for="primaryGoal">Primary Goal</label>
+                                <select id="primaryGoal" name="primaryGoal" class="form-select">
+                                    <option value="">Select primary goal</option>
+                                    <option value="Lose Weight">Lose Weight</option>
+                                    <option value="Gain Muscle">Gain Muscle</option>
+                                    <option value="Improve Strength">Improve Strength</option>
+                                    <option value="Increase Endurance">Increase Endurance</option>
+                                    <option value="General Fitness">General Fitness</option>
+                                    <option value="Rehabilitation">Rehabilitation</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="secondaryGoals">Secondary Goals</label>
+                                <textarea id="secondaryGoals" name="secondaryGoals" class="form-control" rows="3" placeholder="Describe any secondary goals you have"></textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="targetTimeline">Target Timeline</label>
+                                    <select id="targetTimeline" name="targetTimeline" class="form-select">
+                                        <option value="">Select timeline</option>
+                                        <option value="1-3 months">1-3 months</option>
+                                        <option value="3-6 months">3-6 months</option>
+                                        <option value="6-12 months">6-12 months</option>
+                                        <option value="1+ years">1+ years</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sessionsPerWeek">Sessions Per Week</label>
+                                    <select id="sessionsPerWeek" name="sessionsPerWeek" class="form-select">
+                                        <option value="">Select frequency</option>
+                                        <option value="1">1 session per week</option>
+                                        <option value="2">2 sessions per week</option>
+                                        <option value="3">3 sessions per week</option>
+                                        <option value="4">4 sessions per week</option>
+                                        <option value="5">5 sessions per week</option>
+                                        <option value="6">6 sessions per week</option>
+                                        <option value="7">7 sessions per week</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="preferredSchedule">Preferred Schedule</label>
+                                <textarea id="preferredSchedule" name="preferredSchedule" class="form-control" rows="3" placeholder="Describe your preferred workout schedule (days/times)"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dietaryRestrictions">Dietary Restrictions</label>
+                                <textarea id="dietaryRestrictions" name="dietaryRestrictions" class="form-control" rows="3" placeholder="List any dietary restrictions or preferences"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <a href="/profile" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="version-info">v4.1.1</div>
+
+    <script>
+        // Populate age, height, and weight dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate age dropdown (18-80)
+            const ageSelect = document.getElementById('age');
+            for (let i = 18; i <= 80; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                ageSelect.appendChild(option);
+            }
+            
+            // Populate height dropdown (in feet and inches)
+            const heightSelect = document.getElementById('height');
+            for (let ft = 4; ft <= 7; ft++) {
+                for (let in_inches = 0; in_inches <= 11; in_inches++) {
+                    const heightValue = `${ft}'${in_inches}"`;
+                    const option = document.createElement('option');
+                    option.value = heightValue;
+                    option.textContent = heightValue;
+                    heightSelect.appendChild(option);
+                }
+            }
+            
+            // Populate weight dropdown (100-400 lbs)
+            const weightSelect = document.getElementById('weight');
+            for (let w = 100; w <= 400; w += 5) {
+                const option = document.createElement('option');
+                option.value = w;
+                option.textContent = `${w} lbs`;
+                weightSelect.appendChild(option);
+            }
+            
+            // Handle conditional fields
+            document.getElementById('workedOutBefore').addEventListener('change', function() {
+                const detailsField = document.getElementById('workedOutBeforeDetails');
+                detailsField.style.display = this.value === 'Yes' ? 'block' : 'none';
+            });
+            
+            document.getElementById('exerciseTypes').addEventListener('change', function() {
+                const detailsField = document.getElementById('exerciseTypesDetails');
+                detailsField.style.display = this.value === 'Yes' ? 'block' : 'none';
+            });
+            
+            document.getElementById('exercisesToAvoid').addEventListener('change', function() {
+                const detailsField = document.getElementById('exercisesToAvoidDetails');
+                detailsField.style.display = this.value === 'Yes' ? 'block' : 'none';
+            });
+            
+            // Load user profile data
+            loadUserProfile();
+            
+            // Form submission
+            document.getElementById('editProfileForm').addEventListener('submit', handleProfileUpdate);
+        });
+        
+        async function loadUserProfile() {
+            const accessToken = localStorage.getItem('accessToken');
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (!accessToken) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            try {
+                // Load user data
+                if (currentUser) {
+                    const user = JSON.parse(currentUser);
+                    document.getElementById('userName').textContent = `Hello, ${user.name}`;
+                    document.getElementById('firstName').value = user.name.split(' ')[0] || '';
+                    document.getElementById('lastName').value = user.name.split(' ').slice(1).join(' ') || '';
+                    document.getElementById('email').value = user.email;
+                    document.getElementById('phone').value = user.phone || '';
+                }
+                
+                // Load profile data
+                const response = await fetch('/api/profiles/me', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const profile = await response.json();
+                    
+                    // Populate form fields with profile data
+                    document.getElementById('age').value = profile.age || '';
+                    document.getElementById('height').value = profile.height || '';
+                    document.getElementById('weight').value = profile.weight || '';
+                    document.getElementById('gender').value = profile.gender || '';
+                    document.getElementById('emergencyName').value = profile.emergency_name || '';
+                    document.getElementById('emergencyPhone').value = profile.emergency_phone || '';
+                    document.getElementById('emergencyRelationship').value = profile.emergency_relationship || '';
+                    document.getElementById('medicalConditions').value = profile.medical_conditions || '';
+                    document.getElementById('medications').value = profile.medications || '';
+                    document.getElementById('injuriesSurgeries').value = profile.injuries_surgeries || '';
+                    document.getElementById('allergies').value = profile.allergies || '';
+                    document.getElementById('fitnessLevel').value = profile.fitness_level || '';
+                    document.getElementById('workedOutBefore').value = profile.worked_out_before ? 'Yes' : '';
+                    document.getElementById('exerciseTypes').value = profile.exercise_types ? 'Yes' : '';
+                    document.getElementById('exercisesToAvoid').value = profile.exercises_to_avoid ? 'Yes' : '';
+                    document.getElementById('equipmentAccess').value = profile.equipment_access || '';
+                    document.getElementById('primaryGoal').value = profile.primary_goal || '';
+                    document.getElementById('secondaryGoals').value = profile.secondary_goals || '';
+                    document.getElementById('targetTimeline').value = profile.target_timeline || '';
+                    document.getElementById('sessionsPerWeek').value = profile.sessions_per_week || '';
+                    document.getElementById('preferredSchedule').value = profile.preferred_schedule || '';
+                    document.getElementById('dietaryRestrictions').value = profile.dietary_restrictions || '';
+                    
+                    // Show conditional fields if needed
+                    if (profile.worked_out_before) {
+                        document.getElementById('workedOutBeforeDetails').style.display = 'block';
+                        document.getElementById('workedOutBeforeDetails').value = profile.worked_out_before;
+                    }
+                    
+                    if (profile.exercise_types) {
+                        document.getElementById('exerciseTypesDetails').style.display = 'block';
+                        document.getElementById('exerciseTypesDetails').value = profile.exercise_types;
+                    }
+                    
+                    if (profile.exercises_to_avoid) {
+                        document.getElementById('exercisesToAvoidDetails').style.display = 'block';
+                        document.getElementById('exercisesToAvoidDetails').value = profile.exercises_to_avoid;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+        
+        async function handleProfileUpdate(event) {
+            event.preventDefault();
+            
+            const accessToken = localStorage.getItem('accessToken');
+            if (!accessToken) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            // Gather form data
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                age: document.getElementById('age').value,
+                height: document.getElementById('height').value,
+                weight: document.getElementById('weight').value,
+                gender: document.getElementById('gender').value,
+                emergency_name: document.getElementById('emergencyName').value,
+                emergency_phone: document.getElementById('emergencyPhone').value,
+                emergency_relationship: document.getElementById('emergencyRelationship').value,
+                medical_conditions: document.getElementById('medicalConditions').value,
+                medications: document.getElementById('medications').value,
+                injuries_surgeries: document.getElementById('injuriesSurgeries').value,
+                allergies: document.getElementById('allergies').value,
+                fitness_level: document.getElementById('fitnessLevel').value,
+                worked_out_before: document.getElementById('workedOutBefore').value === 'Yes' ? document.getElementById('workedOutBeforeDetails').value : null,
+                exercise_types: document.getElementById('exerciseTypes').value === 'Yes' ? document.getElementById('exerciseTypesDetails').value : null,
+                exercises_to_avoid: document.getElementById('exercisesToAvoid').value === 'Yes' ? document.getElementById('exercisesToAvoidDetails').value : null,
+                equipment_access: document.getElementById('equipmentAccess').value,
+                primary_goal: document.getElementById('primaryGoal').value,
+                secondary_goals: document.getElementById('secondaryGoals').value,
+                target_timeline: document.getElementById('targetTimeline').value,
+                sessions_per_week: document.getElementById('sessionsPerWeek').value,
+                preferred_schedule: document.getElementById('preferredSchedule').value,
+                dietary_restrictions: document.getElementById('dietaryRestrictions').value
+            };
+            
+            try {
+                // Update user data
+                const userResponse = await fetch('/api/users/me', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: `${formData.firstName} ${formData.lastName}`.trim(),
+                        email: formData.email,
+                        phone: formData.phone
+                    })
+                });
+                
+                if (!userResponse.ok) {
+                    const userError = await userResponse.json();
+                    throw new Error(userError.message || 'Failed to update user data');
+                }
+                
+                // Update profile data
+                const profileResponse = await fetch('/api/profiles/me', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!profileResponse.ok) {
+                    const profileError = await profileResponse.json();
+                    throw new Error(profileError.message || 'Failed to update profile data');
+                }
+                
+                // Update local storage with new user data
+                const updatedUser = await userResponse.json();
+                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                
+                // Show success message and redirect
+                alert('Profile updated successfully!');
+                window.location.href = '/profile';
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Error updating profile: ' + error.message);
+            }
+        }
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Clear local storage
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    localStorage.removeItem('currentUser');
+                    
+                    // Redirect to login
+                    window.location.href = '/login';
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Error during logout:', error);
+                // Still clear local storage and redirect
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                localStorage.removeItem('currentUser');
+                window.location.href = '/login';
+            }
+        });
+    </script>
+</body>
+</html>

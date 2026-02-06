@@ -50,7 +50,7 @@
             </div>
         </div>
         
-        <div class="version-info">v4.1.0</div>
+        <div class="version-info">v4.1.1</div>
     </div>
 
     <script>
@@ -98,13 +98,9 @@
                     successDiv.textContent = data.message;
                     successDiv.style.display = 'block';
 
-                    // Redirect based on user role
+                    // Redirect to dashboard after a delay
                     setTimeout(() => {
-                        if (data.user.role === 'admin' || data.user.role === 'trainer') {
-                            window.location.href = '/dashboard';
-                        } else {
-                            window.location.href = '/dashboard';
-                        }
+                        window.location.href = '/dashboard';
                     }, 1500);
                 } else {
                     // Show error message

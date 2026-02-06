@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Ascending Fitness</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="./images/logo.jpg" alt="Ascending Fitness" class="logo-img">
+                <h2>AF</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/profile" class="nav-link active">Profile</a>
+                <a href="/calendar" class="nav-link">Calendar</a>
+                <a href="/workouts" class="nav-link">Workouts</a>
+                <a href="/nutrition" class="nav-link">Nutrition</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Profile</h1>
+                <div class="user-info">
+                    <span id="userName">Loading...</span>
+                    <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+                </div>
+            </header>
+
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="avatar-placeholder">
+                            <span id="initials">??</span>
+                        </div>
+                        <div class="profile-basic-info">
+                            <h2 id="profileName">Loading...</h2>
+                            <p id="profileEmail">Loading...</p>
+                            <p id="profileRole">Loading...</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <h3>Personal Information</h3>
+                        <div class="detail-row">
+                            <span class="label">Age:</span>
+                            <span id="profileAge">Not specified</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Height:</span>
+                            <span id="profileHeight">Not specified</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Weight:</span>
+                            <span id="profileWeight">Not specified</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Gender:</span>
+                            <span id="profileGender">Not specified</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <h3>Fitness Information</h3>
+                        <div class="detail-row">
+                            <span class="label">Fitness Level:</span>
+                            <span id="profileFitnessLevel">Not specified</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Primary Goal:</span>
+                            <span id="profilePrimaryGoal">Not specified</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Sessions/Week:</span>
+                            <span id="profileSessionsPerWeek">Not specified</span>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <a href="/edit-profile" class="btn btn-primary">Edit Profile</a>
+                        <button id="logoutBtn2" class="btn btn-secondary">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="version-info">v4.1.1</div>
+
+    <script>
+        // Load user profile info from API
+        document.addEventListener('DOMContentLoaded', async function() {
+            const accessToken = localStorage.getItem('accessToken');
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (!accessToken) {
+                window.location.href = '/login';
+                return;
+            }
+
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                document.getElementById('userName').textContent = `Hello, ${user.name}`;
+                document.getElementById('profileName').textContent = user.name;
+                document.getElementById('profileEmail').textContent = user.email;
+                document.getElementById('profileRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                
+                // Set initials in avatar
+                const nameParts = user.name.split(' ');
+                const initials = nameParts.map(part => part[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('initials').textContent = initials;
+            }
+
+            try {
+                const response = await fetch('/api/profiles/me', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const profile = await response.json();
+                    
+                    // Update profile fields
+                    document.getElementById('profileAge').textContent = profile.age || 'Not specified';
+                    document.getElementById('profileHeight').textContent = profile.height || 'Not specified';
+                    document.getElementById('profileWeight').textContent = profile.weight || 'Not specified';
+                    document.getElementById('profileGender').textContent = profile.gender || 'Not specified';
+                    document.getElementById('profileFitnessLevel').textContent = profile.fitness_level || 'Not specified';
+                    document.getElementById('profilePrimaryGoal').textContent = profile.primary_goal || 'Not specified';
+                    document.getElementById('profileSessionsPerWeek').textContent = profile.sessions_per_week || 'Not specified';
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+
+            // Logout functionality
+            const logoutButtons = document.querySelectorAll('#logoutBtn, #logoutBtn2');
+            logoutButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    try {
+                        const response = await fetch('/api/auth/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            // Clear local storage
+                            localStorage.removeItem('accessToken');
+                            localStorage.removeItem('refreshToken');
+                            localStorage.removeItem('currentUser');
+                            
+                            // Redirect to login
+                            window.location.href = '/login';
+                        } else {
+                            console.error('Logout failed');
+                        }
+                    } catch (error) {
+                        console.error('Error during logout:', error);
+                        // Still clear local storage and redirect
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        localStorage.removeItem('currentUser');
+                        window.location.href = '/login';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -72,7 +72,7 @@
             </div>
         </div>
         
-        <div class="version-info">v4.1.0</div>
+        <div class="version-info">v4.1.1</div>
     </div>
 
     <script>
@@ -148,11 +148,7 @@
 
                     // Redirect to dashboard after a delay
                     setTimeout(() => {
-                        if (data.user.role === 'trainer') {
-                            window.location.href = '/trainer-setup';
-                        } else {
-                            window.location.href = '/setup-profile';
-                        }
+                        window.location.href = '/dashboard';
                     }, 1500);
                 } else {
                     // Show error message

@@ -2,6 +2,24 @@
 
 All notable changes to Ascending Fitness v4 will be documented in this file.
 
+## [4.1.1] - 2026-02-06
+
+### Added
+- Create dashboard page for logged-in users
+- Create profile page to view user information
+- Create edit-profile page for comprehensive profile management
+- Add proper routing for dashboard, profile, and edit-profile pages
+- Implement profile data loading and saving functionality
+- Add comprehensive form fields for fitness and medical information
+- Add conditional fields for dynamic form behavior
+- Implement proper navigation between pages
+
+### Changed
+- Updated registration redirect to point to dashboard instead of non-existent pages
+- Updated login redirect to point to dashboard consistently
+- Enhanced server routing to handle multiple frontend pages
+- Updated all HTML files to reflect new version 4.1.1
+
 ## [4.1.0] - 2026-02-06
 
 ### Added
