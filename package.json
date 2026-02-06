@@ -1,6 +1,6 @@
 {
-  "name": "ascending-fitness-v4.1.1",
-  "version": "4.1.1",
+  "name": "ascending-fitness-v4.1.2",
+  "version": "4.1.2",
   "description": "Ascending Fitness Platform - Next Generation",
   "main": "backend/server.js",
   "scripts": {

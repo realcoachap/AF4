@@ -2,6 +2,18 @@
 
 All notable changes to Ascending Fitness v4 will be documented in this file.
 
+## [4.1.2] - 2026-02-06
+
+### Fixed
+- Resolved routing conflicts that prevented API endpoints from being reached
+- Fixed duplicate '/' route definition that interfered with health check
+- Moved API route definitions before catch-all route to ensure proper handling
+- Corrected health check endpoint to use '/health' instead of '/'
+- Ensured registration API endpoint is properly accessible
+
+### Changed
+- Updated version to 4.1.2
+
 ## [4.1.1] - 2026-02-06
 
 ### Added

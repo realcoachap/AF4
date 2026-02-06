@@ -68,16 +68,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/health', healthRoutes);
 
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Ascending Fitness v4.1.1 API Server Running',
-    version: '4.1.1',
-    status: 'operational',
-    timestamp: new Date().toISOString()
-  });
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -87,7 +77,17 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Serve different pages based on route
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    message: 'Ascending Fitness v4.1.2 API Server Running',
+    version: '4.1.2',
+    status: 'operational',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Serve different pages based on route - define these BEFORE the wildcard route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/login.html'));
 });
@@ -117,9 +117,10 @@ app.get('/edit-profile', (req, res) => {
 });
 
 // Serve login page for any other non-API route that doesn't match static files
+// This must come AFTER all specific routes but BEFORE API routes
 app.get('*', (req, res) => {
   // If it's not an API route, serve login page
-  if (!req.path.startsWith('/api/')) {
+  if (!req.path.startsWith('/api/') && !req.path.startsWith('/health')) {
     res.sendFile(path.join(__dirname, '../frontend/login.html'));
   } else {
     res.status(404).json({ message: 'Route not found' });
@@ -167,7 +168,7 @@ async function initializeDatabase() {
 initializeDatabase();
 
 server.listen(PORT, async () => {
-  console.log(`Ascending Fitness v4.1.1 server running on port ${PORT}`);
+  console.log(`Ascending Fitness v4.1.2 server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Health check: http://localhost:${PORT}/`);
   
