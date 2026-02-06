@@ -11,6 +11,9 @@ require('dotenv').config();
 const app = express();
 const server = createServer(app);
 
+// Import database connection to ensure it's initialized
+const db = require('./config/db');
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -19,7 +22,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https:", "http:"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
       imgSrc: ["'self'", "data:", "https:", "http:"],
-      connectSrc: ["'self'", "https:", "http:"],
+      connectSrc: ["'self'", "https:", "http:", "ws:", "wss:"],
       fontSrc: ["'self'", "https:", "http:", "data:"],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],
@@ -29,8 +32,10 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
+  origin: process.env.CLIENT_URL || '*', // Allow all origins for now to fix potential issues
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
 // Trust proxy for Railway
@@ -123,10 +128,31 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-  console.log(`Ascending Fitness v4.0.0 server running on port ${PORT}`);
+// Initialize database tables on startup
+async function initializeDatabase() {
+  try {
+    // Import the initDb function and call it
+    const initDb = require('./config/init-db');
+    await initDb();
+  } catch (err) {
+    console.error('Database initialization failed:', err);
+  }
+}
+
+initializeDatabase();
+
+server.listen(PORT, async () => {
+  console.log(`Ascending Fitness v4.1.1 server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Health check: http://localhost:${PORT}/`);
+  
+  // Test database connection
+  try {
+    await db.query('SELECT NOW()');
+    console.log('Database connection established successfully');
+  } catch (err) {
+    console.error('Database connection failed:', err);
+  }
 });
 
 module.exports = { app, server };
