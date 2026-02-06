@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ascending Fitness</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo-container">
+                <img src="./images/logo.jpg" alt="Ascending Fitness" class="logo-img">
+                <h1>Ascending Fitness</h1>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="button" class="btn btn-primary" id="loginSubmitBtn" onclick="handleLogin()">
+                    <span id="loginSubmitText">Login</span>
+                    <span id="loginSubmitSpinner" class="spinner hidden"></span>
+                </button>
+                
+                <div id="loginError" class="error-message" style="display: none;"></div>
+                <div id="loginSuccess" class="success-message" style="display: none;"></div>
+            </form>
+            
+            <div class="form-nav">
+                <p>Don't have an account? <a href="/register">Register</a></p>
+                <p><a href="/">Back to Home</a></p>
+            </div>
+        </div>
+        
+        <div class="version-info">v4.0.0</div>
+    </div>
+
+    <script>
+        // Handle login
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            const loginSubmitText = document.getElementById('loginSubmitText');
+            const loginSubmitSpinner = document.getElementById('loginSubmitSpinner');
+            const errorDiv = document.getElementById('loginError');
+            const successDiv = document.getElementById('loginSuccess');
+
+            // Show loading state
+            loginSubmitBtn.disabled = true;
+            loginSubmitText.classList.add('hidden');
+            loginSubmitSpinner.classList.remove('hidden');
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store tokens
+                    localStorage.setItem('accessToken', data.tokens.accessToken);
+                    if (data.tokens.refreshToken) {
+                        localStorage.setItem('refreshToken', data.tokens.refreshToken);
+                    }
+                    
+                    // Store user info
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+
+                    // Show success message
+                    successDiv.textContent = data.message;
+                    successDiv.style.display = 'block';
+
+                    // Redirect based on user role
+                    setTimeout(() => {
+                        if (data.user.role === 'admin' || data.user.role === 'trainer') {
+                            window.location.href = '/dashboard';
+                        } else {
+                            window.location.href = '/dashboard';
+                        }
+                    }, 1500);
+                } else {
+                    // Show error message
+                    errorDiv.textContent = data.message || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'An error occurred during login';
+                errorDiv.style.display = 'block';
+            } finally {
+                // Reset button state
+                loginSubmitBtn.disabled = false;
+                loginSubmitText.classList.remove('hidden');
+                loginSubmitSpinner.classList.add('hidden');
+            }
+        }
+
+        // Allow login with Enter key
+        document.getElementById('loginForm').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
+    </script>
+</body>
+</html>
