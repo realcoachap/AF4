@@ -128,14 +128,39 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Initialize database tables on startup
+// Initialize database tables on startup with retry logic
 async function initializeDatabase() {
-  try {
-    // Import the initDb function and call it
-    const initDb = require('./config/init-db');
-    await initDb();
-  } catch (err) {
-    console.error('Database initialization failed:', err);
+  let attempts = 0;
+  const maxAttempts = 10;
+  
+  while (attempts < maxAttempts) {
+    try {
+      // Wait a bit for the database to be ready
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Test the database connection first
+      const db = require('./config/db');
+      await db.query('SELECT NOW()');
+      console.log('Database connection established successfully');
+      
+      // Import the initDb function and call it
+      const initDb = require('./config/init-db');
+      await initDb();
+      
+      console.log('Database initialization completed');
+      break;
+    } catch (err) {
+      attempts++;
+      console.error(`Database initialization attempt ${attempts} failed:`, err.message);
+      
+      if (attempts >= maxAttempts) {
+        console.error('Max database initialization attempts reached');
+        break;
+      }
+      
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
   }
 }
 
