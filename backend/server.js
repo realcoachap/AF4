@@ -12,16 +12,35 @@ const app = express();
 const server = createServer(app);
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:", "http:"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      connectSrc: ["'self'", "https:", "http:"],
+      fontSrc: ["'self'", "https:", "http:", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
 }));
 
+// Trust proxy for Railway
+app.set('trust proxy', 1);
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100 // limit each IP to requests per windowMs
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to requests per windowMs
+  trustProxy: true
 });
 app.use(limiter);
 
@@ -47,8 +66,8 @@ app.use('/api/health', healthRoutes);
 // Health check endpoint
 app.get('/', (req, res) => {
   res.json({ 
-    message: 'Ascending Fitness v4.0.0 API Server Running',
-    version: '4.0.0',
+    message: 'Ascending Fitness v4.1.1 API Server Running',
+    version: '4.1.1',
     status: 'operational',
     timestamp: new Date().toISOString()
   });
