@@ -29,8 +29,8 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files
-app.use(express.static(path.join(__dirname, 'frontend')));
+// Static files - serve from the correct location
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -63,9 +63,19 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+// Serve frontend files for non-API routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/login.html'));
+});
+
+// Serve login page for any non-API route that doesn't match static files
+app.get('*', (req, res) => {
+  // If it's not an API route, serve login page
+  if (!req.path.startsWith('/api/')) {
+    res.sendFile(path.join(__dirname, '../frontend/login.html'));
+  } else {
+    res.status(404).json({ message: 'Route not found' });
+  }
 });
 
 const PORT = process.env.PORT || 5000;
